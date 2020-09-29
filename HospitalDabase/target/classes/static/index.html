@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Hospital DataBase</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<img src="hospital2.png" alt="Hospital" ;width="100" height="100" style= "float:left;  vertical-align:top">
+<h1 style="font-size:60px; color: #731768;  bgcolor=#def28d; text-align:center "> Hospital DataBase</h1>
+</head>
+
+<script type="text/javascript">
+function Addfunction()
+{
+	var Name = document.getElementById("idname").value;
+	var Pnum = document.getElementById("idphnum").value;
+	var email = document.getElementById("idemail").value;
+	var disease = document.getElementById("disease").value;
+	var ward = document.getElementById("ward").value;
+	var doctor = document.getElementById("doctor").value;
+	var ddate = document.getElementById("ddate").value;
+	var med = document.getElementById("med").value;
+	var fees = document.getElementById("fees").value;
+	
+	var Ddata =  { name: Name, pnum: Pnum,email: email, disease: disease, wnum:ward,doctor:doctor,ddate:ddate,
+			mdetail:med,fees:fees};
+	$.ajax({
+		url:"/index/Add",
+		data:Ddata,
+		success:function(data){
+			Displayfunction(); 
+		},
+		error:function(){
+			
+		}
+			
+	});
+}
+function Removefunction()
+{
+	var Name = document.getElementById("idname").value;
+	var Pnum = document.getElementById("idphnum").value;
+	var email = document.getElementById("idemail").value;
+	var Ddata =  { name: Name, pnum: Pnum,email: email };
+	$.ajax({
+		url:"/index/Remove",
+		data:Ddata,
+		success:function(data){
+			Displayfunction();
+			//alert("Remove");
+		},
+		error:function(){
+			alert("error");
+		}
+			
+	});
+	
+}
+
+function Displayfunction()
+{
+	document.getElementById("table").innerHTML = "";
+   
+	var row = '<tr><th>Name</th><th>Email Id</th><th>Phone Number</th><th>Disease </th><th>Ward number </th> <th>doctor </th> <th> Discharge Date</th> <th>Medication Details </th> <th> Total Fees</th></tr>';
+	$('#table').append(row);
+	$.ajax({
+		url:"/index/Display",
+		success:function(data){	
+		$.each(data,function(i,rows){
+		
+				var row = '<tr><td>'+rows.name +'</td><td>'+rows.email +'</td><td>'+rows.pnum +'</td><td>'+rows.disease +'</td><td>'+rows.wnum+'</td><td>'+rows.doctor+'</td><td>'+rows.ddate+'</td><td>'+rows.mdetail+'</td><td>'+rows.fees+'</td></tr>';
+				$('#table').append(row);
+			});
+		},
+		error:function(){
+			alert("error");
+		}
+			
+	});
+}
+
+
+</script>
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;    
+}
+</style>
+<body>
+
+<div style="width:150px;margin-left:10px; margin-top: 50px; margin-bottom:50px; float:left; 
+                margin-left: 5%;" >
+<label> New Patient Details </label>
+<label> Name </label> <textarea rows="1" cols="50" id = "idname"> </textarea>
+<label> Phone number </label> <textarea rows="1"  id = "idphnum"cols="50"></textarea>
+<label> email </label> <textarea rows="1"  id= "idemail" cols="50"></textarea>
+<label> disease </label> <textarea rows="1"  id= "disease" cols="50"></textarea>
+<label> ward number </label> <textarea rows="1"  id= "ward" cols="50"></textarea>
+<label> doctor </label> <textarea rows="1"  id= "doctor" cols="50"></textarea>
+<label> Discharge Date </label> <textarea rows="1"  id= "ddate" cols="50"></textarea>
+<label> Medication Details </label> <textarea rows="1"  id= "med" cols="50"></textarea>
+<label> Total Fees </label> <textarea rows="1"  id= "fees" cols="50"></textarea>
+<input type = "button"  id = "but1"  class="button" onclick = "Addfunction()" Value= "Add" ></input>
+<input type = "button"  id = "but2"  class="button" onclick = "Removefunction()" Value= "Remove" ></input>
+<input type = "button"  id = "but3"  class="button" onclick = "Displayfunction()" Value= "Display All"></input>
+</div>
+<div  style = " float:right; margin-right: 5%;  ">
+<table style="width:500px" id = "table">
+  <tr>
+    <th>Name</th>
+    <th>Email Id</th>
+    <th>Phone Number</th>
+    <th>Disease</th>
+    <th>Ward number</th>
+    <th>doctor</th>
+    <th>Discharge Date</th>
+    <th> Medication Details</th>
+    <th>Total Fees</th>
+  </tr>
+  
+</table>
+
+</div>
+
+</body>
+</html>
